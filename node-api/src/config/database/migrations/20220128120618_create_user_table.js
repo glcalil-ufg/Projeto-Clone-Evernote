@@ -7,7 +7,6 @@ exports.up = knex => knex.schema.createTable('users', table => {
     table.text('login').unique().notNullable()
     table.timestamp('data_criacao').defaultTo(knex.fn.now())
     table.timestamp('data_alteracao').defaultTo(knex.fn.now())
-  
 });
 
 exports.down = knex => knex.schema.dropTable('users');

@@ -1,3 +1,3 @@
 const knexfile = require("../../../knexfile");
 
-module.exports = knex = require(knexfile['development']);
+module.exports = knex = require('knex')(knexfile['development']);
