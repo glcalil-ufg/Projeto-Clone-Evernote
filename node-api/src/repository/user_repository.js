@@ -1,11 +1,48 @@
 const knex = require('../config/database');
+const bcrypt = require('bcrypt');
 
-module.exports = user = {
-    async getAll(){
-        retorno = await knex('users').select({nome: 'nome', email: 'email', login: 'login'});
-        return retorno;
+module.exports = user_rep = {
+   async selectAllUsers(){
+        try {
+            return await knex('users').select({id: 'id',nome: 'nome', email: 'email', login: 'login'});
+        } catch (error) {
+            return 'algo deu errado';
+        }
+   },
+   async insertUser(dados){
+        try {
+            password = await bcrypt.hash(dados['senha'],10);
+            result = await knex('users').insert({nome: dados['nome'], email: dados['email'], senha: password, login: dados['login']})
+            return result['rowCount']
+        } catch (error) {
+            return {error:'algo deu errado'};
+        }
+   },
+   async updateUser(dados,id){
+        try {
+            result = await knex('users').update(dados).where('id',id)
+            return result['rowCount']
+        } catch (error) {
+            return 'algo deu errado';
+        }
+   },
+   async updateUserPassword(word,id){
+        try {
+            password = await bcrypt.hash(word,10);
+            result = await knex('users').update({senha: password}).where('id',id);
+            return result['rowCount']
+        } catch (error) {
+            return 'algo deu errado';
+        }
     },
-    async insert(dados){
-        await knex('users').insert({nome: dados['nome'], email: dados['email'], login: dados['login']});
-    } 
+    async comparePassword(dados){
+        try {
+            password = await knex('users').select('senha').where('login',dados['login'])
+            result = await bcrypt.compare(dados['senha'],password[0]['senha']);
+            return result
+        } catch (error) {
+            console.log(error)
+            return 'algo deu errado';
+        }
+    }
 }
