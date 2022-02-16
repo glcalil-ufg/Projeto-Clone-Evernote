@@ -1,11 +1,13 @@
+require('dotenv').config()
+
 module.exports = {
 
   development: {
     client: 'pg',
     connection: {
-      database: 'Knex_EverNote',
-      user:     'postgress',
-      password: 'asdf1234'
+      database: process.env.database,
+      user:     process.env.user_database,
+      password: process.env.password_database
     },
     migrations: {
         table_name: 'knex_migrations',
