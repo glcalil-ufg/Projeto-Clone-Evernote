@@ -38,11 +38,11 @@ module.exports = user_rep = {
     async comparePassword(dados){
         try {
             password = await knex('users').select('senha').where('login',dados['login'])
-            result = await bcrypt.compare(dados['senha'],password[0]['senha']);
-            return result
+            if(password == '') return false;
+            return await bcrypt.compare(dados['senha'],password[0]['senha']);
+            
         } catch (error) {
-            console.log(error)
-            return 'algo deu errado';
+            return false;
         }
     }
 }

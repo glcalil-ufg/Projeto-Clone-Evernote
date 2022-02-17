@@ -1,4 +1,8 @@
 const user = require('../repository/user_repository.js');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
+
+const secret = process.env.jwt_token;
 
 module.exports = {
     async getAll() {
@@ -18,6 +22,30 @@ module.exports = {
     },
 
     async loginUser(dados){
-        return await user.comparePassword(dados);
+        resposta = await user.comparePassword(dados);
+        if(resposta){
+            const token = jwt.sign({login:dados['login']},secret, {expiresIn: '2h'})
+            return {login:'login',token:token}
+        }else {
+           return 'Usuário ou senha invalidos' 
+        }
+    },
+
+    verifyUser(dados){
+        const token = dados['x-acess-token'];
+        if(!token){
+            console.log('não a token de acesso');
+            return false;
+        }else {
+            return jwt.verify(token,secret, (err,decode) =>{
+                if(err){
+                    return false
+                }else {
+                    console.log(decode.login);
+                    return true
+                }
+            })
+        }
+
     }
 }

@@ -4,9 +4,15 @@ const user = require('../business/user_business');
 const router = express.Router();
 
 router.get('/',(req,res ) => {
-    user.getAll().then(resposta =>{
-        res.json(resposta);
-    })
+    
+    if(user.verifyUser(req.headers)){
+        user.getAll().then(resposta =>{
+            res.json(resposta);
+        })
+    }else {
+        res.json({erro: 'acesso não autorizado'})
+    }
+    
 });
 
 router.post('/register',(req,res ) => {
