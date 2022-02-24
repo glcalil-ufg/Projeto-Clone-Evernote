@@ -5,10 +5,6 @@ require('dotenv').config();
 const secret = process.env.jwt_token;
 
 module.exports = {
-    async getAll() {
-        return await user.selectAllUsers(); 
-    },
-
     async registerUser(dados){
         return await user.insertUser(dados);
     },
@@ -35,6 +31,10 @@ module.exports = {
         return await user.customSelect({nome:'nome'},{id:dados['id']})
     },
 
+    async getByLogin(dados){
+        return await user.customSelect({nome:'nome'},{login:dados['login']})
+    },
+
     verifyUser(dados){
         const token = dados['x-acess-token'];
         if(!token){
@@ -45,8 +45,7 @@ module.exports = {
                 if(err){
                     return false
                 }else {
-                    console.log(decode.login);
-                    return true
+                    return {'login': decode.login}
                 }
             })
         }
