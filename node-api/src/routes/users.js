@@ -15,6 +15,19 @@ router.get('/',(req,res ) => {
     
 });
 
+router.get('/byId',(req,res ) => {
+    
+    if(user.verifyUser(req.headers)){
+        let dados = req.query;
+        user.getById(dados).then(resposta =>{
+            res.json(resposta);
+        })
+    }else {
+        res.json({erro: 'acesso não autorizado'})
+    }
+    
+});
+
 router.post('/register',(req,res ) => {
     let {id} = req.query;
     let {dados} = req.body;

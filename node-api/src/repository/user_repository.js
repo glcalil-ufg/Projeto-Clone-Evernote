@@ -44,5 +44,12 @@ module.exports = user_rep = {
         } catch (error) {
             return false;
         }
-    }
+    },
+   async customSelect(coluns = {id: 'id', login: 'login'},params = 'id, >, 0',order = 'id'){
+        try {
+            return await knex('users').select(coluns).where(params).orderBy(order);
+        } catch (error) {
+            return false
+        }
+   }
 }

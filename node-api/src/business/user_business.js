@@ -25,10 +25,14 @@ module.exports = {
         resposta = await user.comparePassword(dados);
         if(resposta){
             const token = jwt.sign({login:dados['login']},secret, {expiresIn: '2h'})
-            return {login:'login',token:token}
+            return {login:dados['login'],token:token}
         }else {
            return 'Usuário ou senha invalidos' 
         }
+    },
+
+    async getById(dados){
+        return await user.customSelect({nome:'nome'},{id:dados['id']})
     },
 
     verifyUser(dados){
