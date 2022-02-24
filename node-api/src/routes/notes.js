@@ -11,10 +11,9 @@ router.get('/nota',(req,res) => {
     });
 });
 
-router.get('/:id',(req,res) => {
+router.get('/',(req,res) => {
     let token = req.headers
-    let {id} = req.params
-    nota.getAll(id,token).then(listaNotas => {
+    nota.getAll(token).then(listaNotas => {
         res.json(listaNotas);
     });
 });

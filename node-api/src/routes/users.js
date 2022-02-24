@@ -4,52 +4,39 @@ const user = require('../business/user_business');
 const router = express.Router();
 
 router.get('/',(req,res ) => {
-    
-    if(user.verifyUser(req.headers)){
-        user.getAll().then(resposta =>{
+    if(dados = user.verifyUser(req.headers)){
+        user.getDadosUser(dados).then(resposta =>{
             res.json(resposta);
         })
     }else {
-        res.json({erro: 'acesso não autorizado'})
+        res.json({'Erro': 'Acesso Negado'})
     }
-    
-});
-
-router.get('/byId',(req,res ) => {
-    
-    if(user.verifyUser(req.headers)){
-        let dados = req.query;
-        user.getById(dados).then(resposta =>{
-            res.json(resposta);
-        })
-    }else {
-        res.json({erro: 'acesso não autorizado'})
-    }
-    
 });
 
 router.post('/register',(req,res ) => {
-    let {id} = req.query;
     let {dados} = req.body;
-    user.registerUser(dados,id).then(resposta =>{
+    user.registerUser(dados).then(resposta =>{
         res.json(resposta); 
     })
 });
 
 router.post('/update',(req,res ) => {
-    let {id} = req.query;
-    let {dados} = req.body;
-    user.changeUser(dados,id).then(resposta =>{
-        res.json(resposta); 
-    })
+    if(dadosUser = user.verifyUser(req.headers)){
+            let {dados} = req.body;
+            user.changeUser(dados,dadosUser).then(resposta =>{
+            res.json(resposta); 
+        })
+    } else res.json({'Error':'Acesso Negado'});
 });
 
 router.post('/update-password',(req,res ) => {
-    let {id} = req.query;
-    let {dados} = req.body;
-    user.changeUserPassword(dados['senha'],id).then(resposta =>{
-        res.json(resposta); 
-    })
+    if(user.verifyUser(req.headers)){
+        let {id} = req.query;
+        let {dados} = req.body;
+        user.changeUserPassword(dados['senha'],id).then(resposta =>{
+            res.json(resposta); 
+        })
+    } else res.json({'Error':'Acesso Negado'});
 });
 
 router.post('/login',(req,res ) => {

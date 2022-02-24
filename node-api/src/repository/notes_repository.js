@@ -1,9 +1,9 @@
 const knex = require('../config/database');
 
 module.exports = {
-    async selectAll(user){
+    async selectAll(id){
         try {
-            let retorno = await knex('notes').select({titulo : 'titulo',id:'id',data:'data_criacao'}).where('user_id','=',user);
+            let retorno = await knex('notes').select({titulo : 'titulo',id:'id',data:'data_criacao'}).where('user_id','=',id);
             return retorno;
         } catch (error) {
             return 'Falha ao buscar lista de notas';

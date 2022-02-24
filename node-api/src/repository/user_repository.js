@@ -2,11 +2,11 @@ const knex = require('../config/database');
 const bcrypt = require('bcrypt');
 
 module.exports = user_rep = {
-   async selectAllUsers(){
+   async selectUser(login){
         try {
-            return await knex('users').select({id: 'id',nome: 'nome', email: 'email', login: 'login'});
+            return await knex('users').select({id: 'id',nome: 'nome', email: 'email'}).where('login','=',login);
         } catch (error) {
-            return 'algo deu errado';
+            return 'Algo deu errado';
         }
    },
    async insertUser(dados){
@@ -18,18 +18,18 @@ module.exports = user_rep = {
             return {error:'algo deu errado'};
         }
    },
-   async updateUser(dados,id){
+   async updateUser(dados,login){
         try {
-            result = await knex('users').update(dados).where('id',id)
+            result = await knex('users').update(dados).where('id',login)
             return result['rowCount']
         } catch (error) {
             return 'algo deu errado';
         }
    },
-   async updateUserPassword(word,id){
+   async updateUserPassword(word,login){
         try {
             password = await bcrypt.hash(word,10);
-            result = await knex('users').update({senha: password}).where('id',id);
+            result = await knex('users').update({senha: password}).where('login',login);
             return result['rowCount']
         } catch (error) {
             return 'algo deu errado';

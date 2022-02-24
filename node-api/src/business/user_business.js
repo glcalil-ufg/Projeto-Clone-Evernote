@@ -5,16 +5,26 @@ require('dotenv').config();
 const secret = process.env.jwt_token;
 
 module.exports = {
+    async getDadosUser(dados){
+        let {login} = dados;
+        return await user.selectUser(login);
+    },
+
+    async getByLogin(dados){
+        return await user.customSelect({nome:'nome',id:'id'},{login:dados['login']})
+    },
+
     async registerUser(dados){
         return await user.insertUser(dados);
     },
 
-    async changeUser(dados,id){
-        return await user.updateUser(dados,id);
+    async changeUser(dados,dadosUser){
+        let {login} = dadosUser
+        return await user.updateUser(dados,login);
     },
 
-    async changeUserPassword(password,id){
-        return await user.updateUserPassword(password,id);
+    async changeUserPassword(password,login){
+        return await user.updateUserPassword(password,login);
     },
 
     async loginUser(dados){
@@ -25,14 +35,6 @@ module.exports = {
         }else {
            return 'Usuário ou senha invalidos' 
         }
-    },
-
-    async getById(dados){
-        return await user.customSelect({nome:'nome'},{id:dados['id']})
-    },
-
-    async getByLogin(dados){
-        return await user.customSelect({nome:'nome'},{login:dados['login']})
     },
 
     verifyUser(dados){
@@ -49,6 +51,5 @@ module.exports = {
                 }
             })
         }
-
     }
 }

@@ -1,21 +1,26 @@
 const note = require('../repository/notes_repository');
-const { verifyUser } = require('./user_business');
 const user = require('./user_business');
 
 module.exports = {
-    async getAll(id,token){
-        if(user.verifyUser(token))retorno = await note.selectAll(id);
-        else retorno = 'Acesso negado'
+    async getAll(token){
+        if(login = user.verifyUser(token)){
+            let usuario = await user.getByLogin(login);
+            retorno = await note.selectAll(usuario[0]['id']);
+        }else retorno = 'Acesso negado'
         return retorno;
     },
     async insereNota(dados,token){
-        if(user.verifyUser(token))retorno = await note.insert(dados);
-        else retorno = 'Acesso negado'
+        if(login = user.verifyUser(token)){
+            usuario = await user.getByLogin(login);
+            dados['id'] = usuario[0]['id']
+            retorno = await note.insert(dados);
+        } else retorno = 'Acesso negado'
         return retorno;
     },
     async atualizaNota(dados,token){
-        if(user.verifyUser(token))retorno = await note.update(dados);
-        else retorno = 'Acesso negado'
+        if(user.verifyUser(token)){
+            retorno = await note.update(dados);
+        }else retorno = 'Acesso negado'
         return retorno;
     },
     async getNote(id,token){
@@ -23,11 +28,10 @@ module.exports = {
         if(login){
             let nota = await note.selectNote(id);
             let usuario = await user.getByLogin(login);
-            retorno = {'nota':nota, usuario}
+            nota[0]['autor'] = usuario[0]['nome']
+            return nota
         }else {
-            retorno = 'Acesso invalido'
+            return'Acesso invalido'
         }
-       
-        return retorno;
     },
 }
