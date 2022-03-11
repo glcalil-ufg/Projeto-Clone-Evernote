@@ -27,7 +27,7 @@ module.exports = {
     },
     async selectNote(id){
         try {
-            retorno = await knex('notes').select({titulo: 'titulo', corpo: 'corpo',id:'user_id'}).where('id','=',id);
+            retorno = await knex('notes').select({titulo: 'titulo', corpo: 'corpo',id:'id'}).where('id','=',id);
             return retorno;
         } catch (error) {
             return 'Falha buscar nota';
