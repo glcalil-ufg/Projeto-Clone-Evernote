@@ -1,17 +1,11 @@
 import React from 'react';
 import "./App.scss";
-import { Notification, Section } from 'rbx';
 import { Fragment } from "react";
-import Header  from './components/header'
+import Home from './screens/home'
 
 const App = () => (
-    <Fragment>
-        <Header/>
-        <Section>
-            <Notification color="success">
-                Olá pessoas!!
-            </Notification>
-        </Section>
-    </Fragment>
+    <div>
+        <Home/>
+    </div>
 )
 export default App;
