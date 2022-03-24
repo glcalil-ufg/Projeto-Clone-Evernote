@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
-import { Navbar, Container  } from 'rbx'
+import { Navbar, Container, Column } from 'rbx'
+import { ColumnGroup } from 'rbx/grid/columns/column-group';
 import logoImage from '../../assets/images/logo.png'
 import "../../styles/header.scss";
+import { Link } from 'react-router-dom'
 
 function Header() {
     const [openMenu, setOpenMenu] = useState(false);
@@ -10,7 +12,9 @@ function Header() {
         <Navbar>
             <Container >
                 <Navbar.Brand>
-                    <img src={logoImage}/>
+                    <Link to='/home'>
+                     <img src={logoImage}/>
+                    </Link>
                     <Navbar.Burger
                         className="navbar-burger burger"
                         aria-label="menu"
@@ -23,7 +27,17 @@ function Header() {
                 </Navbar.Brand>
                 <Navbar.Menu active={openMenu.toString()} onClick={() => setOpenMenu(!openMenu)}>
                     <Navbar.Segment as="div" className="navbar-item navbar-end" align="right">
-                        <a href="https://github.com/glcalil-ufg/Projeto-Clone-Evernote" target="_blank">Link do Projeto</a>
+                        <ColumnGroup>
+                            <Column>
+                                <a  className="button is-white has-text-custom-purple" href="https://github.com/glcalil-ufg/Projeto-Clone-Evernote" target="_blank">Link do Projeto</a>
+                            </Column>
+                            <Column>
+                                <Link to='/register' className="button is-white has-text-custom-purple">Registre-se</Link>
+                            </Column>
+                            <Column>
+                                <Link to='/login' className="button is-outlined is-custom-purple">Login</Link>
+                            </Column>
+                        </ColumnGroup>
                     </Navbar.Segment>
                 </Navbar.Menu>
             </Container >
