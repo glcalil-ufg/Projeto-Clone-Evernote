@@ -4,6 +4,7 @@ import ImageHome from '../../assets/images/presentation.png'
 import { Title, Container, Section, Column } from 'rbx'
 import "../../styles/home.scss"
 import { ColumnGroup } from 'rbx/grid/columns/column-group';
+import {Link} from 'react-router-dom'
 
 const Home = () => (
     <Fragment>
@@ -22,9 +23,9 @@ const Home = () => (
                             <br/><br/>
                         </Title>
                         <Title>
-                            <a className="button is-outlined is-white is-large">
-                                <strong>Resgistre-se Grátis Agora</strong>
-                            </a>
+                            <Link to='/register' className="button is-outlined is-white is-large">
+                                <strong> Resgistre-se Grátis Agora</strong>
+                            </Link>
                         </Title>
                     </Column>
                         <img src={ImageHome}/>
